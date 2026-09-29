@@ -2142,6 +2142,11 @@ impl LocalConfig {
     fn load() -> LocalConfig {
         Config::load_::<LocalConfig>("_local")
     }
+    
+    if !config.options.contains_key("enable-check-update") {
+        config.options.insert("enable-check-update".to_string(),"N".to_string());
+        store = true;
+    }
 
     fn store(&self) {
         Config::store_(self, "_local");
