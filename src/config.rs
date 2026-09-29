@@ -2148,6 +2148,7 @@ impl LocalConfig {
             store = true
         }
         
+        
         if store {
             config.store();
         }
