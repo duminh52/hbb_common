@@ -2140,8 +2140,21 @@ pub struct LocalConfig {
 
 impl LocalConfig {
     fn load() -> LocalConfig {
-        Config::load_::<LocalConfig>("_local")
+        let mut config = Config::load_::<LocalConfig>("_local");
+        let mut store = false;
+
+        if !config.options.contains_key("enable-check-update") {
+            config.options.insert("enable-check-update".to_string(),"N".to_string());
+            store = true
+        }
+        
+        if store {
+            config.store();
+        }
+        config
+
     }
+
 
     fn store(&self) {
         Config::store_(self, "_local");
