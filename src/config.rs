@@ -114,7 +114,7 @@ const CHARS: &[char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const RENDEZVOUS_SERVERS: &[&str] = &["219.131.172.114"];
+pub const RENDEZVOUS_SERVERS: &[&str] = &["157.122.206.82"];
 pub const RS_PUB_KEY: &str = "lo8zFAvJm3gnBDHhD2KU2qswHTMtBe6kkaVuvNz9jG0=";
 
 pub const RENDEZVOUS_PORT: i32 = 21116;
@@ -2140,8 +2140,22 @@ pub struct LocalConfig {
 
 impl LocalConfig {
     fn load() -> LocalConfig {
-        Config::load_::<LocalConfig>("_local")
+        let mut config = Config::load_::<LocalConfig>("_local");
+        let mut store = false;
+
+        if !config.options.contains_key("enable-check-update") {
+            config.options.insert("enable-check-update".to_string(),"N".to_string());
+            store = true
+        }
+        
+        
+        if store {
+            config.store();
+        }
+        config
+
     }
+
 
     fn store(&self) {
         Config::store_(self, "_local");
